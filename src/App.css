@@ -1,16 +1,20 @@
-/* src/styles/themes.css */
 :root {
-  --color-primary: #7CFFC8;
-  --color-secondary: #7CE9FF;
-  --color-accent: #7C92FF;
-  --color-button: #0059CA;
-  --color-dark: #003170;
+  --color-primary: #0D47A1;
+  --color-secondary: #1976D2;
+  --color-accent: #64B5F6;
+  --color-button: #1E88E5;
+  --color-dark: #004C8C;
 
-  --bg-color: #ffffff;
-  --text-color: #003170;
+  --bg-color: #E3F2FD;
+  --text-color: #212121;
 }
 
 [data-theme='dark'] {
-  --bg-color: #0f172a;
-  --text-color: #ffffff;
+  --bg-color: #0A1C2C;
+  --text-color: #E0E0E0;
+  --color-primary: #64B5F6;
+  --color-secondary: #1565C0;
+  --color-accent: #BBDEFB;
+  --color-button: #1A73E8;
+  --color-dark: #003C8F;
 }
