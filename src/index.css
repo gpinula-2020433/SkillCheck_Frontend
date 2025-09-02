@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-white text-black dark:bg-[#0f172a] dark:text-white transition-colors duration-300;
+}
+
+section[id] {
+  scroll-margin-top: 64px;
+}
+html {
+  scroll-behavior: smooth; 
+}

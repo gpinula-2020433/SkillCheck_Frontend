@@ -1,0 +1,16 @@
+/* src/styles/themes.css */
+:root {
+  --color-primary: #7CFFC8;
+  --color-secondary: #7CE9FF;
+  --color-accent: #7C92FF;
+  --color-button: #0059CA;
+  --color-dark: #003170;
+
+  --bg-color: #ffffff;
+  --text-color: #003170;
+}
+
+[data-theme='dark'] {
+  --bg-color: #0f172a;
+  --text-color: #ffffff;
+}
