@@ -50,37 +50,64 @@ export const Login = () => {
   }
 
   return (
-    <div className='login-container'>
-      <form className='auth-form' onSubmit={handleSubmit}>
-        <Input
-          field='userLoggin'
-          label='Usuario o Email'
-          value={formData.userLoggin.value}
-          onChangeHandler={handleValueChange}
-          placeholder={formData.userLoggin.value}
-          type='text'
-          onBlurHandler={handleValidationOnBlur}
-          showErrorMessage={formData.userLoggin.showError}
-          validationMessage='Este campo no puede estar vacío'
-        />
-        <Input
-          field='password'
-          label='Contraseña'
-          value={formData.password.value}
-          onChangeHandler={handleValueChange}
-          placeholder={formData.password.value}
-          type='password'
-          onBlurHandler={handleValidationOnBlur}
-          showErrorMessage={formData.password.showError}
-          validationMessage='Este campo no puede estar vacío'
-        />
-        <button disabled={isSubmitButtonDisabled || isLoading} type='submit'>
-          {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
-        </button>
-      </form>
-      {error && <p className="error-message">{error}</p>}
-      <div className='redirect-to-login'>
-        <p>¿No tienes una cuenta? <Link to="/auth/register">Regístrate aquí</Link></p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Iniciar Sesión</h2>
+        
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <Input
+            field='userLoggin'
+            label='Usuario o Email'
+            value={formData.userLoggin.value}
+            onChangeHandler={handleValueChange}
+            placeholder="Ingresa tu usuario o email"
+            type='text'
+            onBlurHandler={handleValidationOnBlur}
+            showErrorMessage={formData.userLoggin.showError}
+            validationMessage='Este campo no puede estar vacío'
+          />
+          <Input
+            field='password'
+            label='Contraseña'
+            value={formData.password.value}
+            onChangeHandler={handleValueChange}
+            placeholder="Ingresa tu contraseña"
+            type='password'
+            onBlurHandler={handleValidationOnBlur}
+            showErrorMessage={formData.password.showError}
+            validationMessage='Este campo no puede estar vacío'
+          />
+          
+          <button 
+            className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition duration-200 ${
+              isSubmitButtonDisabled || isLoading 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75'
+            }`}
+            disabled={isSubmitButtonDisabled || isLoading} 
+            type='submit'
+          >
+            {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
+          </button>
+        </form>
+        
+        {error && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+        
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            ¿No tienes una cuenta?{' '}
+            <Link 
+              to="/auth/register" 
+              className="font-medium text-blue-600 hover:text-blue-500 transition duration-200"
+            >
+              Regístrate aquí
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )
