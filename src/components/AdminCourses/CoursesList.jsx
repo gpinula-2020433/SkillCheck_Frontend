@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CourseList = () => {
   // Datos de ejemplo (luego se reemplazarán por datos reales de MongoDB/Backend)
@@ -13,9 +14,9 @@ const CourseList = () => {
   return (
     <div className="max-w-5xl mx-auto p-6 font-sans mt-8">
       <h1 className="text-2xl font-bold mb-2">Listar todos los Cursos</h1>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mb-4">
+      <Link to='/admin/courses/create' className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mb-4">
         Crear Curso
-      </button>
+      </Link>
 
       <div className="overflow-x-auto shadow-lg rounded-lg">
         <table className="w-full text-left border border-gray-200">

@@ -11,6 +11,7 @@ import Timeline from './components/AllQuestionnaire/Timeline'
 import CoursesAdminPage from './pages/AdminPage/CoursesAdminPage'
 import CoursesPage from './pages/MainPage/CoursesPage'
 import GradesPage from './pages/MainPage/GradesPage'
+import CreateCourseAdmin from './pages/AdminPage/CreateCoursesAdmin'
 
 const isAuthenticated= true
 export const routes = [
@@ -43,6 +44,7 @@ export const routes = [
         children: [
             { path: '', element: <Navigate to="courses" /> },
             { path: 'courses', element: <CoursesAdminPage /> },
+            { path: 'courses/create', element: <CreateCourseAdmin/>},
         ]
     },
     {
