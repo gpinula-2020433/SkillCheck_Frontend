@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CourseList = () => {
-  // Datos de ejemplo (luego se reemplazarán por datos reales de MongoDB/Backend)
+  const navigate = useNavigate()
+  // Datos de ejemplo
   const courses = [
     { id: 1, name: "Examen de matemáticas" },
     { id: 2, name: "Examen de ciencia" },
@@ -38,7 +40,9 @@ const CourseList = () => {
               <tr key={course.id} className="border-t">
                 <td className="px-6 py-3">{course.name}</td>
                 <td className="px-6 py-3">
-                  <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded">
+                  <button 
+                    onClick={() => navigate(`/admin/questionnaire/create`)}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded">
                     agregar
                   </button>
                 </td>

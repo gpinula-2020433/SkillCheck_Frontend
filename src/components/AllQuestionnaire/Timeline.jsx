@@ -1,11 +1,14 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const Timeline = () => {
+  const navigate = useNavigate()
   const timelineData = [
     {
       date: "Domingo, 24 de Agosto de 2025",
       events: [
         {
+          id: 1,
           time: "23:59",
           title: "Actividad ejemplo matemática",
           description: "Cierra cuestionario - Matemática",
@@ -33,7 +36,8 @@ export const Timeline = () => {
                   <strong className="block">{event.title}</strong>
                   <p className="text-gray-600 dark:text-gray-300 my-1">{event.description}</p>
                   <div className="flex justify-end mt-2">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    <button onClick={() => navigate(`/main/activity/${event.id}`)} 
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                       {event.action}
                     </button>
                   </div>

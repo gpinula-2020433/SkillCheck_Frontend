@@ -12,6 +12,8 @@ import CoursesAdminPage from './pages/AdminPage/CoursesAdminPage'
 import CoursesPage from './pages/MainPage/CoursesPage'
 import GradesPage from './pages/MainPage/GradesPage'
 import CreateCourseAdmin from './pages/AdminPage/CreateCoursesAdmin'
+import ActivityDetail from './components/ActivityDetail/ActivityDetail'
+import CreateQuestionnaireAdmin from './pages/AdminPage/CreateQuestionnaireAdmin'
 
 const isAuthenticated= true
 export const routes = [
@@ -26,7 +28,8 @@ export const routes = [
             { path: '', element: <Navigate to="timeline" />},
             { path: 'timeline', element: <HomePage />},
             { path: 'courses', element: <CoursesPage/>},
-            { path: 'grades', element: <GradesPage/>}
+            { path: 'grades', element: <GradesPage/>},
+            { path: 'activity/:id', element: <ActivityDetail />}
         ]
     },
     {
@@ -44,6 +47,7 @@ export const routes = [
         children: [
             { path: '', element: <Navigate to="courses" /> },
             { path: 'courses', element: <CoursesAdminPage /> },
+            { path: 'questionnaire/create', element: <CreateQuestionnaireAdmin/> },
             { path: 'courses/create', element: <CreateCourseAdmin/>},
         ]
     },

@@ -1,8 +1,11 @@
 import React from 'react'
+import GradesStudent from '../../components/GradesStudent/GradesStudent'
 
 export const GradesPage = () => {
   return (
-    <div>GradesPage</div>
+    <div>
+      <GradesStudent />
+    </div>
   )
 }
 export default GradesPage
