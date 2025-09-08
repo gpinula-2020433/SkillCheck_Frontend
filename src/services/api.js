@@ -23,3 +23,31 @@ export const loginRequest = async (userLoginData) => {
     }
   }
 }
+
+export const logoutRequest = async () => {
+  try {
+    const res = await apiClient.post('/logout')
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || 'Error al realizar el logout',
+      status: err.response?.status || 500,
+      details: err.response?.data || null
+    }
+  }
+}
+
+export const getAuthenticatedUserRequest = async () => {
+  try {
+    const res = await apiClient.get('/v1/user/getAuthenticatedUser')
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || 'Error al obtener usuario autenticado',
+      status: err.response?.status || 500,
+      details: err.response?.data || null
+    }
+  }
+}

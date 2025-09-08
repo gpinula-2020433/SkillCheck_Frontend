@@ -14,23 +14,12 @@ import GradesPage from './pages/MainPage/GradesPage'
 import CreateCourseAdmin from './pages/AdminPage/CreateCoursesAdmin'
 import ActivityDetail from './components/ActivityDetail/ActivityDetail'
 import CreateQuestionnaireAdmin from './pages/AdminPage/CreateQuestionnaireAdmin'
+import { ProtectedRoute, ProtectedRouteAdmin, RootRedirect } from './shared/utils/ProtectedRoute'
 
-const isAuthenticated= true
 export const routes = [
     {
         path: '/',
-        element: isAuthenticated? <Navigate to="main"/> : <Navigate to="auth"/>
-    },
-    {
-        path: '/main',
-        element: <MainPage/>,
-        children: [
-            { path: '', element: <Navigate to="timeline" />},
-            { path: 'timeline', element: <HomePage />},
-            { path: 'courses', element: <CoursesPage/>},
-            { path: 'grades', element: <GradesPage/>},
-            { path: 'activity/:id', element: <ActivityDetail />}
-        ]
+        element: <RootRedirect />
     },
     {
         path: '/auth',
@@ -42,13 +31,34 @@ export const routes = [
         ]
     },
     {
-        path: '/admin',
-        element: <AdminPage />,
+        element: <ProtectedRoute/>,
         children: [
-            { path: '', element: <Navigate to="courses" /> },
-            { path: 'courses', element: <CoursesAdminPage /> },
-            { path: 'questionnaire/create', element: <CreateQuestionnaireAdmin/> },
-            { path: 'courses/create', element: <CreateCourseAdmin/>},
+            {
+                path: '/main',
+                element: <MainPage/>,
+                children: [
+                    { path: '', element: <Navigate to="timeline" />},
+                    { path: 'timeline', element: <HomePage />},
+                    { path: 'courses', element: <CoursesPage/>},
+                    { path: 'grades', element: <GradesPage/>},
+                    { path: 'activity/:id', element: <ActivityDetail />}
+                ]
+            },
+        ]
+    },
+    {
+        element: <ProtectedRouteAdmin/>,
+        children: [
+            {
+                path: '/admin',
+                element: <AdminPage />,
+                children: [
+                    { path: '', element: <Navigate to="courses" /> },
+                    { path: 'courses', element: <CoursesAdminPage /> },
+                    { path: 'questionnaire/create', element: <CreateQuestionnaireAdmin/> },
+                    { path: 'courses/create', element: <CreateCourseAdmin/>},
+                ]
+            }
         ]
     },
     {

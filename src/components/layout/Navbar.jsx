@@ -3,48 +3,57 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FiMenu, FiX } from 'react-icons/fi'
 import logoSkillCheck from '../../assets/skillCheck.png'
 import { NavButton } from '../NavButton'
+import { useAuth } from '../../shared/hooks/auth/context/AuthProvider'
+import {useLogout} from '../../shared/hooks/auth/useLogout'
 
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const {logout } = useLogout()
 
   const handleLinkClick = (route) => {
     setMenuOpen(false)
     navigate(route)
   }
 
+  const handleLogout = async () => {
+    await logout()
+    navigate('/auth/login')
+  }
+
   const navLinks = (
     <>
       <li>
-        <NavButton
-          text="Principal"
-          onClickHandler={() => handleLinkClick('/')}
-        />
+        <NavButton text="Principal" onClickHandler={() => handleLinkClick('/main/home')} />
       </li>
       <li>
-        <NavButton
-          text="Cursos"
-          onClickHandler={() => handleLinkClick('/main/courses')}
-        />
+        <NavButton text="Cursos" onClickHandler={() => handleLinkClick('/main/courses')} />
       </li>
       <li>
-        <NavButton
-          text="Calificaciones"
-          onClickHandler={() => handleLinkClick('/main/grades')}
-        />
+        <NavButton text="Calificaciones" onClickHandler={() => handleLinkClick('/main/grades')} />
       </li>
-      <li>
-        <NavButton
-          text="Administración"
-          onClickHandler={() => handleLinkClick('/admin')}
-        />
-      </li>
-      <li>
-        <NavButton
-          text="Iniciar sesión"
-          onClickHandler={() => handleLinkClick('/auth')}
-        />
-      </li>
+
+      {/* Solo para ADMIN o TEACHER */}
+      {user && ['ADMIN', 'TEACHER'].includes(user.role) && (
+        <li>
+          <NavButton text="Administración" onClickHandler={() => handleLinkClick('/admin')} />
+        </li>
+      )}
+
+      {/* Si no está logeado */}
+      {!user && (
+        <li>
+          <NavButton text="Iniciar sesión" onClickHandler={() => handleLinkClick('/auth/login')} />
+        </li>
+      )}
+
+      {/* Si está logeado */}
+      {user && (
+        <li>
+          <NavButton text="Cerrar sesión" onClickHandler={handleLogout} />
+        </li>
+      )}
     </>
   )
 
@@ -60,10 +69,7 @@ export const Navbar = () => {
         </ul>
 
         <div className="md:hidden">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-2xl text-gray-700"
-          >
+          <button onClick={() => setMenuOpen(!menuOpen)} className="text-2xl text-gray-700">
             {menuOpen ? <FiX /> : <FiMenu />}
           </button>
         </div>
