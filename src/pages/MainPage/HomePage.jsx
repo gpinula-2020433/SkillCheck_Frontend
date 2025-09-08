@@ -1,5 +1,5 @@
 import React from 'react'
-import Timeline from '../../components/AllQuestionnaire/Timeline'
+import Timeline from './Timeline'
 import TestButton from '../../components/TestButton/TestButton'
 
 export const HomePage = () => {

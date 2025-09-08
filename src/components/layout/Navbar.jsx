@@ -25,7 +25,7 @@ export const Navbar = () => {
   const navLinks = (
     <>
       <li>
-        <NavButton text="Principal" onClickHandler={() => handleLinkClick('/main/home')} />
+        <NavButton text="Principal" onClickHandler={() => handleLinkClick('/main/timeline')} />
       </li>
       <li>
         <NavButton text="Cursos" onClickHandler={() => handleLinkClick('/main/courses')} />

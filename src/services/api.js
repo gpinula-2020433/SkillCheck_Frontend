@@ -51,3 +51,5 @@ export const getAuthenticatedUserRequest = async () => {
     }
   }
 }
+
+export default apiClient

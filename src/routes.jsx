@@ -7,7 +7,7 @@ import {AuthPage} from './pages/AuthPage/AuthPage'
 import { HomePage } from './pages/MainPage/HomePage'
 import {Login} from './components/Auth/Login'
 import {Register} from './components/Auth/Register'
-import Timeline from './components/AllQuestionnaire/Timeline'
+import Timeline from './pages/MainPage/Timeline'
 import CoursesAdminPage from './pages/AdminPage/CoursesAdminPage'
 import CoursesPage from './pages/MainPage/CoursesPage'
 import GradesPage from './pages/MainPage/GradesPage'
@@ -15,6 +15,7 @@ import CreateCourseAdmin from './pages/AdminPage/CreateCoursesAdmin'
 import ActivityDetail from './components/ActivityDetail/ActivityDetail'
 import CreateQuestionnaireAdmin from './pages/AdminPage/CreateQuestionnaireAdmin'
 import { ProtectedRoute, ProtectedRouteAdmin, RootRedirect } from './shared/utils/ProtectedRoute'
+import Questionnaire from './components/AllQuestionnaire/Questionnaire'
 
 export const routes = [
     {
@@ -38,10 +39,11 @@ export const routes = [
                 element: <MainPage/>,
                 children: [
                     { path: '', element: <Navigate to="timeline" />},
-                    { path: 'timeline', element: <HomePage />},
+                    { path: 'timeline', element: <Timeline />},
                     { path: 'courses', element: <CoursesPage/>},
                     { path: 'grades', element: <GradesPage/>},
-                    { path: 'activity/:id', element: <ActivityDetail />}
+                    { path: 'activity/:id', element: <ActivityDetail />},
+                    { path: 'questionnaire/:id', element: <Questionnaire /> }
                 ]
             },
         ]
