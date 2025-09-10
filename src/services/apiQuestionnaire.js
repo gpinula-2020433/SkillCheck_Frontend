@@ -17,6 +17,21 @@ export const getQuestionnairesForStudentRequest = async (filters = {}) => {
   }
 }
 
+export const getStudentAttemptForQuestionnaireRequest = async (id) => {
+  try {
+    const res = await apiClient.get(`/v1/questionnaire/getStudentAttemptForQuestionnaire/${id}`, {
+      withCredentials: true
+    })
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || "Error al obtener intento del cuestionario",
+      status: err.response?.status || 500,
+      details: err.response?.data || null
+    }
+  }
+}
 
 export const getQuestionsForStudentRequest = async (questionnaireId) => {
   try {

@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import Modal from "react-modal"
+import { useStudentAttempt } from "../../shared/hooks/questionnaire/useStudentAttempt"
 
 const ActivityDetail = () => {
   const navigate = useNavigate()
@@ -8,12 +9,36 @@ const ActivityDetail = () => {
   const { questionnaire } = location.state || {}
   const [showConfirm, setShowConfirm] = useState(false)
 
+  const { attempt, loading } = useStudentAttempt(questionnaire?._id)
+
   if (!questionnaire) return <p>Cuestionario no encontrado</p>
+  if (loading) return <p>Cargando intento...</p>
 
   const handleStart = () => {
     setShowConfirm(false)
     navigate(`/main/questionnaire/${questionnaire._id}`, { state: { questionnaire } })
   }
+
+  //Helpers de formato (números y fecha en español Guatemala)
+  const nf2 = new Intl.NumberFormat("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const nfi0 = new Intl.NumberFormat("es-GT", { maximumFractionDigits: 0 })
+  const fmtDateTime = (d) =>
+    new Date(d).toLocaleString("es-GT", { dateStyle: "full", timeStyle: "short" })
+
+  const maxGrade = attempt?.maxGrade ?? attempt?.questionnaireId?.maxGrade ?? questionnaire.maxGrade
+  const passingGrade = attempt?.passingGrade ?? attempt?.questionnaireId?.passingGrade ?? questionnaire.passingGrade
+  const maxAllowedGrade = attempt?.maxAllowedGrade ?? attempt?.questionnaireId?.maxAllowedGrade ?? questionnaire.maxAllowedGrade
+  const weightOverMaxGrade = attempt?.weightOverMaxGrade ?? attempt?.questionnaireId?.weightOverMaxGrade ?? questionnaire.weightOverMaxGrade
+
+  const scoreOverMaxGrade = attempt?.scoreOverMaxGrade ?? 0
+  const scoreOverAllowedGrade = attempt?.scoreOverAllowedGrade ?? 0
+  const weightedScore = attempt?.weightedScore ?? 0
+  const approvalStatus = attempt?.approvalStatus
+  const approvalStatusEs = approvalStatus === "Passed" ? "Aprobado" : approvalStatus === "Failed" ? "Reprobado" : "—"
+
+  const totalQuestions = attempt?.totalQuestions ?? 0
+  const correctAnswers = attempt?.correctAnswers ?? 0
+  const percentage = attempt?.percentage ?? 0 
 
   return (
     <div className="max-w-4xl mx-auto p-6 font-sans mt-8">
@@ -21,33 +46,121 @@ const ActivityDetail = () => {
         onClick={() => navigate(-1)}
         className="text-blue-500 hover:underline mb-4"
       >
-        ← Regresar al curso
+        ← Regresar
       </button>
 
       <div className="bg-gray-50 shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-2">{questionnaire.title} - {questionnaire.courseId.name}</h2>
+        <h2 className="text-xl font-semibold mb-2">
+          {questionnaire.title} - {questionnaire.courseId.name}
+        </h2>
         <hr className="my-2" />
 
         <p className="text-sm">
-          <strong>Abrió:</strong> {new Date(questionnaire.openDate).toLocaleDateString()}
+          <strong>Abrió:</strong>{" "}
+          {new Date(questionnaire.openDate).toLocaleDateString()}
         </p>
         <p className="text-sm mb-4">
-          <strong>Cierra:</strong> {new Date(questionnaire.deadline).toLocaleDateString()}
+          <strong>Cierra:</strong>{" "}
+          {new Date(questionnaire.deadline).toLocaleDateString()}
         </p>
 
         <p className="text-sm mb-4">
-          <strong>Nota máxima:</strong> {questionnaire.maxGrade} | 
-          <strong> Nota máxima permitida:</strong> {questionnaire.maxAllowedGrade} | 
-          <strong> Nota aprobatoria:</strong> {questionnaire.passingGrade}
+          <strong>Nota máxima (global):</strong> {maxGrade} |{" "}
+          <strong> Nota máxima permitida:</strong> {maxAllowedGrade} |{" "}
+          <strong> Nota aprobatoria:</strong> {passingGrade}
         </p>
+
         <p className="text-sm mb-4">{questionnaire.description}</p>
 
+        {attempt ? (
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold mb-4">
+              Su calificación final en este cuestionario es{" "}
+              {nf2.format(scoreOverAllowedGrade)}/{nf2.format(maxAllowedGrade)}.
+            </h3>
+
+            <table className="w-full text-sm border border-gray-300 rounded-lg shadow-sm">
+              <tbody>
+                <tr className="border-b">
+                  <td className="px-4 py-2 font-medium bg-gray-100 w-1/3">Estado</td>
+                  <td className="px-4 py-2">Finalizado</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-2 font-medium bg-gray-100">Completado</td>
+                  <td className="px-4 py-2">
+                    {attempt.completionDate ? fmtDateTime(attempt.completionDate) : "—"}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-2 font-medium bg-gray-100">Puntos</td>
+                  <td className="px-4 py-2">
+                    {nf2.format(correctAnswers)} / {nf2.format(totalQuestions)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-medium bg-gray-100">Calificación</td>
+                  <td className="px-4 py-2">
+                    {nf2.format(scoreOverAllowedGrade)} de {nf2.format(maxAllowedGrade)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 className="text-md font-semibold">Detalle del resultado</h4>
+            <table className="w-full text-sm border border-gray-300 rounded-lg shadow-sm">
+              <tbody>
+                <tr className="border-b">
+                  <td className="px-4 py-2 font-medium bg-gray-100 w-1/3">Nota máxima (global)</td>
+                  <td className="px-4 py-2">
+                    {nf2.format(scoreOverMaxGrade)} / {nf2.format(maxGrade)}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-2 font-medium bg-gray-100">Nota (sobre máximo permitido)</td>
+                  <td className="px-4 py-2">
+                    {nf2.format(scoreOverAllowedGrade)} / {nf2.format(maxAllowedGrade)}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-2 font-medium bg-gray-100">Nota final ponderada (sobre 100)</td>
+                  <td className="px-4 py-2">{nf2.format(weightedScore)}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-2 font-medium bg-gray-100">Nota aprobatoria</td>
+                  <td className="px-4 py-2">{nf2.format(passingGrade)}</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-medium bg-gray-100">Resultado</td>
+                  <td className="px-4 py-2">
+                    {approvalStatusEs}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* Botón de revisión, ver si se agregará la funcionalidad para el student*/}
+            <div className="mt-4">
+              <button
+                onClick={() =>
+                  navigate(`/main/questionnaire/${questionnaire._id}/review`, {
+                    state: { questionnaire, attempt },
+                  })
+                }
+                className="text-blue-600 hover:underline"
+              >
+                Revisión
+              </button>
+            </div>
+          </div>
+        ) : (
         <button
           onClick={() => setShowConfirm(true)}
           className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
         >
           Resolver cuestionario
         </button>
+      )}
+
       </div>
 
       <Modal

@@ -6,7 +6,7 @@ import { useStudentQuestionnaires } from '../../shared/hooks/questionnaire/useSt
 export const Timeline = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { questionnaires, loading } = useStudentQuestionnaires()
+  const { questionnaires, loading } = useStudentQuestionnaires({ status: 'pending' })
 
   if (loading) return <p>Cargando cuestionarios...</p>
 
@@ -24,7 +24,7 @@ export const Timeline = () => {
       <h2 className="text-lg font-semibold mb-4">Próximos</h2>
 
       {questionnaires.length === 0 ? (
-        <p>No hay cuestionarios disponibles</p>
+        <p>No hay cuestionarios pendientes</p>
       ) : (
         questionnaires.map((q) => (
           <div key={q._id} className="flex mb-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-md">

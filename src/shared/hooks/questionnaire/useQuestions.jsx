@@ -16,7 +16,6 @@ export const useQuestions = (questionnaireId) => {
       try {
 
         const response = await getQuestionsForStudentRequest(questionnaireId)
-                console.log(response)
         if (response.error) {
           throw new Error(
             Array.isArray(response.message)
@@ -72,7 +71,6 @@ export const useQuestions = (questionnaireId) => {
         questionnaireId
       }))
 
-      console.log(payload)
 
       const response = await submitAnswersRequest(payload)
       if (response.error) {
@@ -82,7 +80,7 @@ export const useQuestions = (questionnaireId) => {
             : response.message || "Error desconocido"
         )
       }
-      toast.success("Respuestas enviadas correctamente")
+      toast.success(response.message || "Respuestas enviadas correctamente")
       return response
     } catch (err) {
       setError(err.message)

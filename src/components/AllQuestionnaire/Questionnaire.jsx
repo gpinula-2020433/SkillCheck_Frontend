@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useQuestions } from '../../shared/hooks/questionnaire/useQuestions'
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Modal from "react-modal"
 
 export const Questionnaire = () => {
@@ -9,8 +9,10 @@ export const Questionnaire = () => {
   const { 
     questions, loading, currentIndex, setAnswer, nextQuestion, prevQuestion, submitAllAnswers, answers
   } = useQuestions(questionnaire?._id)
+  const navigate = useNavigate()
 
   const [showConfirm, setShowConfirm] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   if (!questionnaire) return <p>Cuestionario no encontrado</p>
   if (loading) return <p>Cargando preguntas...</p>
@@ -20,8 +22,17 @@ export const Questionnaire = () => {
   const currentAnswer = answers.find(a => a.questionId === currentQuestion._id) || {}
 
   const handleSubmit = async () => {
-    setShowConfirm(false)
-    await submitAllAnswers()
+    setSubmitting(true)  
+    try {
+      const response = await submitAllAnswers()
+      if (!response.error) {
+        navigate(`/main/activity/${questionnaire._id}`, { state: { questionnaire } })
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -100,14 +111,16 @@ export const Questionnaire = () => {
           <button 
             onClick={() => setShowConfirm(false)}
             className="bg-gray-400 text-white px-4 py-2 rounded"
+            disabled={submitting}
           >
             Cancelar
           </button>
           <button 
             onClick={handleSubmit}
-            className="bg-green-500 text-white px-4 py-2 rounded"
+            className={`bg-green-500 text-white px-4 py-2 rounded ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={submitting}
           >
-            Sí, enviar
+            {submitting ? "Enviando..." : "Sí, enviar"}
           </button>
         </div>
       </Modal>
