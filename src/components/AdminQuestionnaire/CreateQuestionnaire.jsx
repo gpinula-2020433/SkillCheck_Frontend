@@ -252,22 +252,34 @@ export const CreateQuestionnaire = () => {
             </div>
           ))}
 
-          <button
-            type="button"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-            onClick={addQuestion}
-          >
-            Agregar pregunta
-          </button>
+           <div className="flex justify-center mt-4">
+            <button
+              type="button"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              onClick={addQuestion}
+            >
+              Agregar pregunta
+            </button>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded font-semibold mt-4"
-          disabled={loading}
-        >
-          {loading ? "Guardando..." : "Crear cuestionario"}
-        </button>
+        <div className="flex justify-between mt-4">
+          <button
+            type="button"
+            onClick={() => navigate(`/admin/questionnaire/details/${courseId}`)}
+            className="w-40 bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded font-semibold"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            className="w-40 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded font-semibold"
+            disabled={loading}
+          >
+            {loading ? "Guardando..." : "Crear cuestionario"}
+          </button>
+        </div>
       </form>
     </div>
   )

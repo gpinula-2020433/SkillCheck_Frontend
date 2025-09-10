@@ -43,11 +43,11 @@ const ActivityDetail = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 font-sans mt-8">
       <button
-        onClick={() => navigate(-1)}
-        className="text-blue-500 hover:underline mb-4"
-      >
-        ← Regresar
-      </button>
+          onClick={() => navigate(`/main/courses`)}
+          className="text-blue-500 hover:underline mb-4"
+        >
+          ← Ir a cursos
+        </button>
 
       <div className="bg-gray-50 shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-2">

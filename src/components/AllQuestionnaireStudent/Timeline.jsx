@@ -6,8 +6,8 @@ import { useStudentQuestionnaires } from '../../shared/hooks/questionnaire/useSt
 export const Timeline = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { questionnaires, loading } = useStudentQuestionnaires()
-  //{ status: 'pending' }
+  const { questionnaires, loading } = useStudentQuestionnaires({ status: 'pending' })
+  
   if (loading) return <p>Cargando cuestionarios...</p>
 
   return (

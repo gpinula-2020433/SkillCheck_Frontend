@@ -46,7 +46,7 @@ const StudentCourses = () => {
               <img
                 src={
                   course.imageCourse
-                    ? `http://localhost:3200/uploads/${course.imageCourse}`
+                    ? `/uploads/img/courses/${course.imageCourse}`
                     : "/placeholder.png"
                 }
                 alt={course.name}
@@ -54,7 +54,7 @@ const StudentCourses = () => {
               />
               
               <button
-                onClick={() => navigate(`/admin/questionnaire/list/${course._id}`)}
+                onClick={() => navigate(`/main/course/${course._id}`, { state: { course } })}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded"
               >
                 Ver detalles

@@ -24,8 +24,6 @@ const CourseList = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-6 py-3 font-bold text-gray-800">Nombre del Curso</th>
-              <th className="px-6 py-3 font-bold text-gray-800">Agregar Cuestionario</th>
-              <th className="px-6 py-3 font-bold text-gray-800">Listar Cuestionarios</th>
               <th className="px-6 py-3 font-bold text-gray-800">Ver detalles del curso </th>
             </tr>
           </thead>
@@ -40,22 +38,6 @@ const CourseList = () => {
               courses.map((course) => (
                 <tr key={course._id} className="border-t">
                   <td className="px-6 py-3">{course.name}</td>
-                  <td className="px-6 py-3">
-                    <button
-                      onClick={() => navigate(`/admin/questionnaire/create?courseId=${course._id}`)}
-                      className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded"
-                    >
-                      agregar
-                    </button>
-                  </td>
-                  <td className="px-6 py-3">
-                    <button
-                      onClick={() => navigate(`/admin/questionnaire/list/${course._id}`)}
-                      className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded"
-                    >
-                      ver
-                    </button>
-                  </td>
                   <td className="px-6 py-3">
                     <button
                       onClick={() => navigate(`/admin/questionnaire/details/${course._id}`)}
