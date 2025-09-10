@@ -15,3 +15,23 @@ export const getAllCoursesRequest = async () => {
     }
   }
 }
+
+
+export const createCourseRequest = async (formData) => {
+  try {
+    const res = await apiClient.post('/v1/course/addCourse', formData, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || "Error al crear curso",
+      status: err.response?.status || 500,
+      details: err.response?.data || null
+    }
+  }
+}

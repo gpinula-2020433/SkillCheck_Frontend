@@ -1,37 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { getAllCoursesRequest } from "../../services/apiCourse"
 
 const StudentCourses = () => {
-  // Datos de ejemplo (se reemplazarán con los del backend/MongoDB)
-  const studentCourses = [
-    { id: 1, name: "Matemática", image: "https://cursos.aiu.edu/images/matematica.jpg" },
-    { id: 2, name: "Ciencia", image: "https://sdcoopsemulweb.s3.amazonaws.com/imagenesCursos/rGcYp7pqMxvwFuw8iuQJEmG2boRSNOkqB8UQSa2m.jpg" },
-    { id: 3, name: "Historia", image: "https://img.freepik.com/vetores-premium/linha-do-doodle-da-historia-definir-o-assunto-do-esboco-da-universidade-da-escola_399998-67.jpg" },
-    { id: 4, name: "Inglés", image: "https://cdn.euroinnova.edu.es/img/subidasEditor/cursos-de-idiomas-ingles-1584011024.webp" },
-  ];
+  const navigate = useNavigate()
+  const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true)
+      const res = await getAllCoursesRequest()
+      if (!res.error) {
+        setCourses(res.courses || [])
+      } else {
+        setError(res.message)
+      }
+      setLoading(false)
+    }
+
+    fetchCourses()
+  }, [])
+
+  if (loading) return <p className="text-gray-500">Cargando cursos...</p>
+  if (error) return <p className="text-red-500">{error}</p>
 
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans mt-8">
       <h1 className="text-2xl font-bold mb-1">Cursos</h1>
-      <p className="text-gray-600 mb-6">Vista general de curso</p>
+      <p className="text-gray-600 mb-6">Vista general de cursos</p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {studentCourses.map((course) => (
-          <div
-            key={course.id}
-            className="bg-white shadow-md rounded-lg overflow-hidden text-center p-4"
-          >
-            <h2 className="text-lg font-bold mb-3">{course.name}</h2>
-            <img
-              src={course.image}
-              alt={course.name}
-              className="w-full h-32 object-cover rounded-md mb-3"
-            />
-            <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">
-              Ver cuestionarios
-            </button>
-          </div>
-        ))}
-      </div>
+      {courses.length === 0 ? (
+        <p className="text-gray-500">No hay cursos disponibles</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {courses.map((course) => (
+            <div
+              key={course._id}
+              className="bg-white shadow-md rounded-lg overflow-hidden text-center p-4"
+            >
+              <h2 className="text-lg font-bold mb-3">{course.name}</h2>
+              
+              {/* Imagen con fallback */}
+              <img
+                src={
+                  course.imageCourse
+                    ? `http://localhost:3200/uploads/${course.imageCourse}`
+                    : "/placeholder.png"
+                }
+                alt={course.name}
+                className="w-full h-32 object-cover rounded-md mb-3"
+              />
+              
+              <button
+                onClick={() => navigate(`/admin/questionnaire/list/${course._id}`)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded"
+              >
+                Ver cuestionarios
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
