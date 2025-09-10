@@ -7,15 +7,14 @@ import {AuthPage} from './pages/AuthPage/AuthPage'
 import { HomePage } from './pages/MainPage/HomePage'
 import {Login} from './components/Auth/Login'
 import {Register} from './components/Auth/Register'
-import Timeline from './pages/MainPage/Timeline'
 import CoursesAdminPage from './pages/AdminPage/CoursesAdminPage'
 import CoursesPage from './pages/MainPage/CoursesPage'
 import GradesPage from './pages/MainPage/GradesPage'
 import CreateCourseAdmin from './pages/AdminPage/CreateCoursesAdmin'
-import ActivityDetail from './components/ActivityDetail/ActivityDetail'
+import ActivityDetail from './components/AllQuestionnaireStudent/ActivityDetail'
 import CreateQuestionnaireAdmin from './pages/AdminPage/CreateQuestionnaireAdmin'
 import { ProtectedRoute, ProtectedRouteAdmin, RootRedirect } from './shared/utils/ProtectedRoute'
-import Questionnaire from './components/AllQuestionnaire/Questionnaire'
+import Questionnaire from './components/AllQuestionnaireStudent/Questionnaire'
 import { QuestionnaireDetails } from './components/AdminQuestionnaire/QuestionnaireDetails'
 import QuestionnaireResults from './components/AdminQuestionnaire/QuestionnaireResults'
 import { ViewQuestionnaire } from './components/AdminQuestionnaire/ViewQuestionnaire'
@@ -42,7 +41,7 @@ export const routes = [
                 element: <MainPage/>,
                 children: [
                     { path: '', element: <Navigate to="timeline" />},
-                    { path: 'timeline', element: <Timeline />},
+                    { path: 'timeline', element: <HomePage />},
                     { path: 'courses', element: <CoursesPage/>},
                     { path: 'grades', element: <GradesPage/>},
                     { path: 'activity/:id', element: <ActivityDetail />},

@@ -1,5 +1,5 @@
 import React from 'react'
-import ActivityDetail from '../../components/ActivityDetail/ActivityDetail'
+import ActivityDetail from '../../components/AllQuestionnaireStudent/ActivityDetail'
 
 export const QuestionnaireDetails = () => {
   return (
