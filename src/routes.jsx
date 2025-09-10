@@ -16,6 +16,9 @@ import ActivityDetail from './components/ActivityDetail/ActivityDetail'
 import CreateQuestionnaireAdmin from './pages/AdminPage/CreateQuestionnaireAdmin'
 import { ProtectedRoute, ProtectedRouteAdmin, RootRedirect } from './shared/utils/ProtectedRoute'
 import Questionnaire from './components/AllQuestionnaire/Questionnaire'
+import { QuestionnaireDetails } from './components/AdminQuestionnaire/QuestionnaireDetails'
+import QuestionnaireResults from './components/AdminQuestionnaire/QuestionnaireResults'
+import { ViewQuestionnaire } from './components/AdminQuestionnaire/ViewQuestionnaire'
 
 export const routes = [
     {
@@ -57,8 +60,11 @@ export const routes = [
                 children: [
                     { path: '', element: <Navigate to="courses" /> },
                     { path: 'courses', element: <CoursesAdminPage /> },
-                    { path: 'questionnaire/create', element: <CreateQuestionnaireAdmin/> },
+                    { path: 'questionnaire/create/:courseId', element: <CreateQuestionnaireAdmin/> },
                     { path: 'courses/create', element: <CreateCourseAdmin/>},
+                    { path: 'questionnaire/details/:courseId', element: <QuestionnaireDetails /> },
+                    { path: 'questionnaire/results/:questionnaireId', element: <QuestionnaireResults /> },
+                    { path: 'questionnaire/view/:questionnaireId', element: <ViewQuestionnaire /> }
                 ]
             }
         ]

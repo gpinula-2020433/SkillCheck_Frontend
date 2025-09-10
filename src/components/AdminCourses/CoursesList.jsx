@@ -26,6 +26,7 @@ const CourseList = () => {
               <th className="px-6 py-3 font-bold text-gray-800">Nombre del Curso</th>
               <th className="px-6 py-3 font-bold text-gray-800">Agregar Cuestionario</th>
               <th className="px-6 py-3 font-bold text-gray-800">Listar Cuestionarios</th>
+              <th className="px-6 py-3 font-bold text-gray-800">Ver detalles del curso </th>
             </tr>
           </thead>
           <tbody>
@@ -55,7 +56,16 @@ const CourseList = () => {
                       ver
                     </button>
                   </td>
+                  <td className="px-6 py-3">
+                    <button
+                      onClick={() => navigate(`/admin/questionnaire/details/${course._id}`)}
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded"
+                    >
+                      inspeccionar
+                    </button>
+                  </td>
                 </tr>
+                
               ))
             )}
           </tbody>
