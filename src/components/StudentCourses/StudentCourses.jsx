@@ -57,7 +57,7 @@ const StudentCourses = () => {
                 onClick={() => navigate(`/admin/questionnaire/list/${course._id}`)}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded"
               >
-                Ver cuestionarios
+                Ver detalles
               </button>
             </div>
           ))}
