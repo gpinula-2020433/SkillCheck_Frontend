@@ -123,3 +123,22 @@ export const createQuestionnaireRequest = async (data) => {
     }
   }
 }
+
+export const getStudentCourseResultsRequest = async (courseId) => {
+  if (!courseId) return { error: true, message: "El id de la materia es requerido" }
+
+  try {
+    const res = await apiClient.get("/v1/questionnaire/getStudentQuestionnaireResults", {
+      params: { courseId },
+      withCredentials: true
+    })
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || "Error al obtener resultados",
+      status: err.response?.status || 500,
+      details: err.response?.data || null
+    }
+  }
+}

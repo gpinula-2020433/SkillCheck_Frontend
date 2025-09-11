@@ -1,5 +1,5 @@
 import React from 'react'
-import GradesStudent from '../../components/GradesStudent/GradesStudent'
+import GradesStudent from '../../components/AllGradesStudent/CourseGrades'
 
 export const GradesPage = () => {
   return (

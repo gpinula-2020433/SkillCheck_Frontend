@@ -35,3 +35,17 @@ export const createCourseRequest = async (formData) => {
     }
   }
 }
+
+export const getStudentCoursesRequest = async () => {
+  try {
+    const res = await apiClient.get("/v1/questionnaire/getStudentCourses", { withCredentials: true })
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || "Error al obtener materias",
+      status: err.response?.status || 500,
+      details: err.response?.data || null
+    }
+  }
+}

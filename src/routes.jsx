@@ -19,6 +19,8 @@ import { QuestionnaireDetails } from './components/AdminQuestionnaire/Questionna
 import QuestionnaireResults from './components/AdminQuestionnaire/QuestionnaireResults'
 import { ViewQuestionnaire } from './components/AdminQuestionnaire/ViewQuestionnaire'
 import CourseQuestionnairePage from './pages/MainPage/CourseQuestionnairePage'
+import StudentCourses from './components/AllGradesStudent/StudentCourses'
+import CourseGrades from './components/AllGradesStudent/CourseGrades'
 
 export const routes = [
     {
@@ -45,7 +47,8 @@ export const routes = [
                     { path: 'timeline', element: <HomePage />},
                     { path: 'courses', element: <CoursesPage/>},
                     { path: 'course/:id', element: <CourseQuestionnairePage/>},
-                    { path: 'grades', element: <GradesPage/>},
+                    { path: 'course-grades', element: <StudentCourses/>},
+                    { path: 'course-grades-report/:id', element: <CourseGrades/>},
                     { path: 'activity/:id', element: <ActivityDetail />},
                     { path: 'questionnaire/:id', element: <Questionnaire /> }
                 ]

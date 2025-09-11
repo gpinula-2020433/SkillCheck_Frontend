@@ -31,7 +31,7 @@ export const Navbar = () => {
         <NavButton text="Cursos" onClickHandler={() => handleLinkClick('/main/courses')} />
       </li>
       <li>
-        <NavButton text="Calificaciones" onClickHandler={() => handleLinkClick('/main/grades')} />
+        <NavButton text="Calificaciones" onClickHandler={() => handleLinkClick('/main/course-grades')} />
       </li>
 
       {/* Solo para ADMIN o TEACHER */}
