@@ -25,7 +25,7 @@ export const ProtectedRouteAdmin = () => {
 
   if (loading) return null
   if (!user) return <Navigate to="/auth/login" replace />
-  if (accessDenied) return <Navigate to="/main/home" replace />
+  if (accessDenied) return <Navigate to="/main/timeline" replace />
 
   return <Outlet />
 }

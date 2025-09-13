@@ -49,3 +49,22 @@ export const getStudentCoursesRequest = async () => {
     }
   }
 }
+
+
+export const assignStudentToCourseRequest = async (studentId, courseId) => {
+  try {
+    const res = await apiClient.post(
+      "/v1/studentCourse/addStudentCourse",
+      { student: studentId, course: courseId },
+      { withCredentials: true }
+    )
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || "Error al asignar estudiante",
+      status: err.response?.status || 500,
+      details: err.response?.data || null,
+    }
+  }
+}

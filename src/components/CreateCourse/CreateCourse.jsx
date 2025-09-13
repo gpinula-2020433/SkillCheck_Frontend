@@ -1,74 +1,34 @@
-import React, { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { createCourseRequest } from "../../services/apiCourse"
-import apiClient from "../../services/api"
-import { useAuth } from "../../shared/hooks/auth/context/AuthProvider"
+import React from "react"
+import { useCreateCourse } from "../../shared/hooks/courses/useCreateCourse"
 
 const CreateCourse = () => {
-  const [competencias, setCompetencias] = useState([])
-  const [nombre, setNombre] = useState("")
-  const [descripcion, setDescripcion] = useState("")
-  const [profesor, setProfesor] = useState("")
-  const [profesores, setProfesores] = useState([])
-  const [imagen, setImagen] = useState(null)
-  const { user } = useAuth()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const fetchProfesores = async () => {
-      if (user?.role === "ADMIN") {
-        try {
-          const res = await apiClient.get("/v1/user/allTeachers", { withCredentials: true })
-          setProfesores(res.data.teachers || [])
-        } catch (err) {
-          console.error("Error cargando profesores", err)
-        }
-      } else if (user?.role === "TEACHER") {
-        setProfesor(user.uid)
-      }
-    }
-    fetchProfesores()
-  }, [user])
-
-  const handleAddCompetencia = () => {
-    if (competencias.length < 5) {
-      setCompetencias([
-        ...competencias,
-        { id: competencias.length + 1, competenceName: "", number: competencias.length + 1 },
-      ])
-    }
-  }
-
-  const handleCompetenceChange = (index, value) => {
-    const newCompetencias = [...competencias]
-    newCompetencias[index].competenceName = value
-    setCompetencias(newCompetencias)
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    const formData = new FormData()
-    formData.append("name", nombre)
-    formData.append("description", descripcion)
-    formData.append("teacher", profesor)
-    if (imagen) formData.append("imageCourse", imagen)
-    formData.append("competences",JSON.stringify(competencias.map(c => c.competenceName)))
-
-    const res = await createCourseRequest(formData)
-    if (!res.error) {
-      navigate("/admin/courses")
-    } else {
-      alert(res.message)
-      console.error(res.details)
-    }
-  }
+  const {
+    competencias,
+    profesores,
+    profesor,
+    nombre,
+    descripcion,
+    imagen,
+    alumnos,
+    alumnosSeleccionados,
+    setAlumnosSeleccionados,
+    setProfesor,
+    setNombre,
+    setDescripcion,
+    setImagen,
+    handleAddCompetencia,
+    handleCompetenceChange,
+    handleSubmit,
+    navigate,
+    user
+  } = useCreateCourse()
 
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
       <form onSubmit={handleSubmit}>
         <h1 className="text-2xl font-bold mb-6">Crear un nuevo Curso</h1>
 
+        {/* Nombre */}
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">Nombre del Curso</label>
           <input
@@ -81,6 +41,7 @@ const CreateCourse = () => {
           />
         </div>
 
+        {/* Descripción */}
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">Descripción del curso</label>
           <textarea
@@ -92,6 +53,7 @@ const CreateCourse = () => {
           ></textarea>
         </div>
 
+        {/* Profesor solo si es ADMIN */}
         {user?.role === "ADMIN" && (
           <div className="mb-6">
             <label className="block text-sm font-semibold mb-2">Profesor encargado</label>
@@ -111,6 +73,30 @@ const CreateCourse = () => {
           </div>
         )}
 
+        {/* Asignar alumnos */}
+        <div className="mb-6">
+          <label className="block text-sm font-semibold mb-2">Asignar alumnos</label>
+          <select
+            multiple
+            className="w-full border rounded px-3 py-2 h-40"
+            value={alumnosSeleccionados}
+            onChange={(e) => {
+              const selected = Array.from(e.target.selectedOptions, option => option.value)
+              setAlumnosSeleccionados(selected)
+            }}
+          >
+            {alumnos.map((a) => (
+              <option key={a._id} value={a._id}>
+                {a.name} {a.surname} - {a.email}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-gray-500 mt-1">
+            Mantén Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples alumnos
+          </p>
+        </div>
+
+        {/* Imagen */}
         <div className="mb-6">
           <label className="block text-sm font-semibold mb-2">Imagen del curso</label>
           <input
@@ -121,19 +107,7 @@ const CreateCourse = () => {
           />
         </div>
 
-        <div className="mb-6 text-center">
-          <p className="text-gray-700 text-sm mb-2">
-            Agregar cuestionario o alumnos al curso (Próximamente)
-          </p>
-          <button
-            type="button"
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed"
-            disabled
-          >
-            Agregar Cuestionarios
-          </button>
-        </div>
-
+        {/* Botones */}
         <div className="flex gap-4">
           <button
             type="button"
@@ -151,6 +125,7 @@ const CreateCourse = () => {
         </div>
       </form>
 
+      {/* Competencias */}
       <div>
         <h2 className="text-lg font-bold mb-3">Competencias</h2>
         <button
