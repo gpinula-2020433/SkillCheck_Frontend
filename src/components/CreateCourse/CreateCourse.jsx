@@ -92,7 +92,7 @@ const CreateCourse = () => {
             ))}
           </select>
           <p className="text-xs text-gray-500 mt-1">
-            Mantén Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples alumnos
+            Mantén Ctrl (Windows) o Cmd (Mac) más click izquierdo para seleccionar múltiples alumnos
           </p>
         </div>
 

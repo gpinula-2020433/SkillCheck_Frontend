@@ -53,8 +53,7 @@ export const getStudentCoursesRequest = async () => {
 
 export const assignStudentToCourseRequest = async (studentId, courseId) => {
   try {
-    const res = await apiClient.post(
-      "/v1/studentCourse/addStudentCourse",
+    const res = await apiClient.post("/v1/studentCourse/addStudentCourse",
       { student: studentId, course: courseId },
       { withCredentials: true }
     )
