@@ -19,16 +19,18 @@ const ActivityDetail = () => {
     navigate(`/main/questionnaire/${questionnaire._id}`, { state: { questionnaire } })
   }
 
-  //Helpers de formato (números y fecha en español Guatemala)
+  //Helpers de formato (números con 2 decimales y fecha en español Guatemala)
   const nf2 = new Intl.NumberFormat("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  const nfi0 = new Intl.NumberFormat("es-GT", { maximumFractionDigits: 0 })
+
   const fmtDateTime = (d) =>
-    new Date(d).toLocaleString("es-GT", { dateStyle: "full", timeStyle: "short" })
+  new Date(d).toLocaleString("es-GT", {
+    dateStyle: "full",
+    timeStyle: "medium",
+  })
 
   const maxGrade = attempt?.maxGrade ?? attempt?.questionnaireId?.maxGrade ?? questionnaire.maxGrade
   const passingGrade = attempt?.passingGrade ?? attempt?.questionnaireId?.passingGrade ?? questionnaire.passingGrade
   const maxAllowedGrade = attempt?.maxAllowedGrade ?? attempt?.questionnaireId?.maxAllowedGrade ?? questionnaire.maxAllowedGrade
-  const weightOverMaxGrade = attempt?.weightOverMaxGrade ?? attempt?.questionnaireId?.weightOverMaxGrade ?? questionnaire.weightOverMaxGrade
 
   const scoreOverMaxGrade = attempt?.scoreOverMaxGrade ?? 0
   const scoreOverAllowedGrade = attempt?.scoreOverAllowedGrade ?? 0
@@ -38,16 +40,20 @@ const ActivityDetail = () => {
 
   const totalQuestions = attempt?.totalQuestions ?? 0
   const correctAnswers = attempt?.correctAnswers ?? 0
-  const percentage = attempt?.percentage ?? 0 
+
+  // Fechas para controlar disponibilidad
+  const now = new Date()
+  const openDate = new Date(questionnaire.openDate)
+  const deadline = new Date(questionnaire.deadline)
 
   return (
     <div className="max-w-4xl mx-auto p-6 font-sans mt-8">
       <button
-          onClick={() => navigate(`/main/courses`)}
-          className="text-blue-500 hover:underline mb-4"
-        >
-          ← Ir a cursos
-        </button>
+        onClick={() => navigate(`/main/courses`)}
+        className="text-blue-500 hover:underline mb-4"
+      >
+        ← Ir a cursos
+      </button>
 
       <div className="bg-gray-50 shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-2">
@@ -56,12 +62,12 @@ const ActivityDetail = () => {
         <hr className="my-2" />
 
         <p className="text-sm">
-          <strong>Abrió:</strong>{" "}
-          {new Date(questionnaire.openDate).toLocaleDateString()}
+          <strong>Apertura:</strong>{" "}
+          {fmtDateTime(questionnaire.openDate)}
         </p>
         <p className="text-sm mb-4">
-          <strong>Cierra:</strong>{" "}
-          {new Date(questionnaire.deadline).toLocaleDateString()}
+          <strong>Cierre:</strong>{" "}
+          {fmtDateTime(questionnaire.deadline)}
         </p>
 
         <p className="text-sm mb-4">
@@ -73,6 +79,7 @@ const ActivityDetail = () => {
         <p className="text-sm mb-4">{questionnaire.description}</p>
 
         {attempt ? (
+          // Ya existe intento → mostrar resultados
           <div className="space-y-6">
             <h3 className="text-lg font-semibold mb-4">
               Su calificación final en este cuestionario es{" "}
@@ -137,30 +144,32 @@ const ActivityDetail = () => {
                 </tr>
               </tbody>
             </table>
-
-            {/* Botón de revisión, ver si se agregará la funcionalidad para el student*/}
-            <div className="mt-4">
-              <button
-                onClick={() =>
-                  navigate(`/main/questionnaire/${questionnaire._id}/review`, {
-                    state: { questionnaire, attempt },
-                  })
-                }
-                className="text-blue-600 hover:underline"
-              >
-                Revisión
-              </button>
-            </div>
           </div>
         ) : (
-        <button
-          onClick={() => setShowConfirm(true)}
-          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
-        >
-          Resolver cuestionario
-        </button>
-      )}
+          // No hay intento → validar fechas
+          <>
+            {now < openDate && (
+              <p className="text-red-600 font-semibold">
+                El cuestionario aún no está disponible (abre el {fmtDateTime(openDate)})
+              </p>
+            )}
 
+            {now > deadline && (
+              <p className="text-red-600 font-semibold">
+                El cuestionario ha vencido y ya no acepta respuestas (cerró el {fmtDateTime(deadline)})
+              </p>
+            )}
+
+            {now >= openDate && now <= deadline && (
+              <button
+                onClick={() => setShowConfirm(true)}
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+              >
+                Resolver cuestionario
+              </button>
+            )}
+          </>
+        )}
       </div>
 
       <Modal

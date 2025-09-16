@@ -162,9 +162,9 @@ export const CreateQuestionnaire = () => {
 
         <div className="flex space-x-4">
           <div className="flex-1">
-            <label className="font-semibold">Fecha inicio</label>
+            <label className="font-semibold">Fecha y hora de inicio</label>
             <input
-              type="date"
+              type="datetime-local"
               className="border px-3 py-2 rounded w-full"
               value={questionnaireData.openDate}
               onChange={(e) =>
@@ -177,9 +177,9 @@ export const CreateQuestionnaire = () => {
             />
           </div>
           <div className="flex-1">
-            <label className="font-semibold">Fecha cierre</label>
+            <label className="font-semibold">Fecha y hora de cierre</label>
             <input
-              type="date"
+              type="datetime-local"
               className="border px-3 py-2 rounded w-full"
               value={questionnaireData.deadline}
               onChange={(e) =>
@@ -239,7 +239,6 @@ export const CreateQuestionnaire = () => {
                 onChange={(e) => handleQuestionChange(i, "type", e.target.value)}
               >
                 <option value="CHOICE">Selección múltiple</option>
-                <option value="OPEN">Respuesta abierta</option>
               </select>
 
               <label className="font-semibold">Competencia</label>
@@ -297,22 +296,6 @@ export const CreateQuestionnaire = () => {
                   >
                     Agregar opción
                   </button>
-                </div>
-              )}
-
-              {q.type === "OPEN" && (
-                <div className="space-y-1">
-                  <label className="font-semibold">Respuesta correcta</label>
-                  <input
-                    type="text"
-                    placeholder="Campo"
-                    className="border px-2 py-1 rounded w-full"
-                    value={q.correctAnswer}
-                    onChange={(e) =>
-                      handleQuestionChange(i, "correctAnswer", e.target.value)
-                    }
-                    required
-                  />
                 </div>
               )}
             </div>

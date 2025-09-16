@@ -19,6 +19,7 @@ export const Navbar = () => {
 
   const handleLogout = async () => {
     await logout()
+    localStorage.removeItem("showOnlyAvailable")
     navigate('/auth/login')
   }
 
@@ -27,12 +28,17 @@ export const Navbar = () => {
       <li>
         <NavButton text="Principal" onClickHandler={() => handleLinkClick('/main/timeline')} />
       </li>
-      <li>
-        <NavButton text="Cursos" onClickHandler={() => handleLinkClick('/main/courses')} />
-      </li>
-      <li>
-        <NavButton text="Calificaciones" onClickHandler={() => handleLinkClick('/main/course-grades')} />
-      </li>
+      {user && 'STUDENT' === user.role && (
+        <>
+          <li>
+            <NavButton text="Cursos" onClickHandler={() => handleLinkClick('/main/courses')} />
+          </li>
+
+          <li>
+            <NavButton text="Calificaciones" onClickHandler={() => handleLinkClick('/main/course-grades')} />
+          </li>
+        </>
+      )}
 
       {/* Solo para ADMIN o TEACHER */}
       {user && ['ADMIN', 'TEACHER'].includes(user.role) && (
