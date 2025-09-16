@@ -52,4 +52,32 @@ export const getAuthenticatedUserRequest = async () => {
   }
 }
 
+export const createStudentRequest = async (data) => {
+  try {
+    const res = await apiClient.post('/register/student', data)
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || "Error al registrar estudiante",
+      status: err.response?.status || 500,
+      details: err.response?.data || null,
+    }
+  }
+}
+
+export const createTeacherRequest = async (data) => {
+  try {
+    const res = await apiClient.post('/register/teacher', data)
+    return res.data
+  } catch (err) {
+    return {
+      error: true,
+      message: err.response?.data?.message || "Error al registrar estudiante",
+      status: err.response?.status || 500,
+      details: err.response?.data || null,
+    }
+  }
+}
+
 export default apiClient

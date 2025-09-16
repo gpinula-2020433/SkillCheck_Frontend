@@ -97,6 +97,13 @@ export const Login = () => {
           </div>
         )}
         
+
+         <p className="mt-4 text-center text-sm">
+          ¿No tienes cuenta?{' '}
+          <Link to="/auth/register" className="text-blue-600 hover:underline">
+            Regístrate
+          </Link>
+        </p>
       </div>
     </div>
   )

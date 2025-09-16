@@ -21,6 +21,7 @@ import { ViewQuestionnaire } from './components/AdminQuestionnaire/ViewQuestionn
 import CourseQuestionnairePage from './pages/MainPage/CourseQuestionnairePage'
 import StudentCourses from './components/AllGradesStudent/StudentCourses'
 import CourseGrades from './components/AllGradesStudent/CourseGrades'
+import { RegisterTeacher } from './components/Auth/RegisterTeacher'
 
 export const routes = [
     {
@@ -33,7 +34,8 @@ export const routes = [
         children: [
             { path: '', element: <Navigate to="login" /> },
             { path: 'login', element: <Login /> },
-            { path: 'register', element: <Register /> }
+            { path: 'register', element: <Register /> },
+            { path: 'registerTeacher', element: <RegisterTeacher /> }
         ]
     },
     {

@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useRegister } from '../../shared/hooks/auth/useRegister'
-import { Link, useNavigate } from 'react-router-dom'
+import { useRegisterTeacher } from '../../shared/hooks/auth/useRegisterTeacher'
+import { useNavigate } from 'react-router-dom'
 import { Input } from '../Input'
 
-export const Register = () => {
-  const { registerStudent, loading, error, success } = useRegister()
+export const RegisterTeacher = () => {
+  const { registerTeacher, loading, error, success } = useRegisterTeacher()
   const navigate = useNavigate()
 
   const initialForm = {
@@ -42,10 +42,10 @@ export const Register = () => {
       surname: formData.surname.value,
       email: formData.email.value,
       password: formData.password.value,
-      role: 'STUDENT'
+      role: 'TEACHER'
     }
 
-    const result = await registerStudent(formToSend)
+    const result = await registerTeacher(formToSend)
 
     if (!result.error) {
       setTimeout(() => navigate('/auth/login'), 1500)
@@ -58,13 +58,13 @@ export const Register = () => {
       })
       setFormErrors(formattedErrors)
     }
-    
+
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Registro de Estudiante</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Registro de Profesor</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
@@ -72,7 +72,7 @@ export const Register = () => {
             label="Nombre"
             value={formData.name.value}
             onChangeHandler={handleValueChange}
-            placeholder="Ingresa tu nombre"
+            placeholder="Ingresa el nombre"
             type="text"
             onBlurHandler={handleValidationOnBlur}
             showErrorMessage={formData.name.showError || !!formErrors.name}
@@ -84,7 +84,7 @@ export const Register = () => {
             label="Apellido"
             value={formData.surname.value}
             onChangeHandler={handleValueChange}
-            placeholder="Ingresa tu apellido"
+            placeholder="Ingresa el apellido"
             type="text"
             onBlurHandler={handleValidationOnBlur}
             showErrorMessage={formData.surname.showError || !!formErrors.surname}
@@ -96,7 +96,7 @@ export const Register = () => {
             label="Correo"
             value={formData.email.value}
             onChangeHandler={handleValueChange}
-            placeholder="Ingresa tu correo"
+            placeholder="Ingresa el correo"
             type="email"
             onBlurHandler={handleValidationOnBlur}
             showErrorMessage={formData.email.showError || !!formErrors.email}
@@ -108,7 +108,7 @@ export const Register = () => {
             label="Contraseña"
             value={formData.password.value}
             onChangeHandler={handleValueChange}
-            placeholder="Ingresa tu contraseña"
+            placeholder="Ingresa la contraseña"
             type="password"
             onBlurHandler={handleValidationOnBlur}
             showErrorMessage={formData.password.showError || !!formErrors.password}
@@ -130,14 +130,9 @@ export const Register = () => {
 
         {error && <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">{error}</div>}
         {success && <div className="mt-4 p-3 bg-green-50 border border-green-200 text-green-600 rounded-lg text-sm">{success}</div>}
-
-        <p className="mt-4 text-center text-sm">
-          ¿Ya tienes cuenta?{' '}
-          <Link to="/auth/login" className="text-blue-600 hover:underline">
-            Inicia sesión
-          </Link>
-        </p>
       </div>
+
+       
     </div>
   )
 }
