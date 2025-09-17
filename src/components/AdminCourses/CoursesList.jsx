@@ -6,6 +6,9 @@ const CourseList = () => {
   const navigate = useNavigate()
   const { courses, loading, error } = useCourses()
 
+  const displayError =
+    error && !error.includes("No se encontraron cursos") ? error : null
+
   return (
     <div className="max-w-5xl mx-auto p-6 font-sans mt-8">
       <h1 className="text-2xl font-bold mb-2">Listar todos los Cursos</h1>
@@ -17,7 +20,7 @@ const CourseList = () => {
       </Link>
 
       {loading && <p className="text-gray-500">Cargando cursos...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {displayError && <p className="text-gray-800 mb-4">{displayError}</p>}
 
       <div className="overflow-x-auto shadow-lg rounded-lg">
         <table className="w-full text-left border border-gray-200">
@@ -30,7 +33,7 @@ const CourseList = () => {
           <tbody>
             {courses.length === 0 ? (
               <tr>
-                <td colSpan="3" className="text-center py-4 text-gray-500">
+                <td colSpan="2" className="text-center py-4 text-gray-500">
                   No hay cursos disponibles
                 </td>
               </tr>
@@ -47,7 +50,6 @@ const CourseList = () => {
                     </button>
                   </td>
                 </tr>
-                
               ))
             )}
           </tbody>
