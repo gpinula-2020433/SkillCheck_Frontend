@@ -1,18 +1,32 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useQuestions } from '../../shared/hooks/questionnaire/useQuestions'
 import { useLocation, useNavigate } from "react-router-dom"
 import Modal from "react-modal"
+import toast from "react-hot-toast"
 
 export const Questionnaire = () => {
   const location = useLocation()
   const { questionnaire } = location.state || {}
+  const navigate = useNavigate()
+
   const { 
     questions, loading, currentIndex, setAnswer, nextQuestion, prevQuestion, submitAllAnswers, answers
   } = useQuestions(questionnaire?._id)
-  const navigate = useNavigate()
 
   const [showConfirm, setShowConfirm] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (questionnaire) {
+      const now = new Date()
+      const deadline = new Date(questionnaire.deadline)
+
+      if (now > deadline) {
+        toast.error("El cuestionario ya ha cerrado.")
+        navigate(`/main/activity/${questionnaire._id}`, { state: { questionnaire } })
+      }
+    }
+  }, [questionnaire, navigate])
 
   if (!questionnaire) return <p>Cuestionario no encontrado</p>
   if (loading) return <p>Cargando preguntas...</p>
@@ -22,7 +36,16 @@ export const Questionnaire = () => {
   const currentAnswer = answers.find(a => a.questionId === currentQuestion._id) || {}
 
   const handleSubmit = async () => {
-    setSubmitting(true)  
+    const now = new Date()
+    const deadline = new Date(questionnaire.deadline)
+
+    if (now > deadline) {
+      toast.error("El cuestionario ya ha cerrado. No puedes enviar tus respuestas.")
+      navigate(`/main/activity/${questionnaire._id}`, { state: { questionnaire } })
+      return
+    }
+
+    setSubmitting(true)
     try {
       const response = await submitAllAnswers()
       if (!response.error) {
@@ -30,6 +53,7 @@ export const Questionnaire = () => {
       }
     } catch (err) {
       console.error(err)
+      toast.error("Ocurrió un error al enviar tus respuestas.")
     } finally {
       setSubmitting(false)
     }
@@ -37,7 +61,9 @@ export const Questionnaire = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 mt-8">
-      <h2 className="text-xl font-semibold mb-4">{questionnaire.title} - {questionnaire.courseId.name}</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        {questionnaire.title} - {questionnaire.courseId.name}
+      </h2>
       <p className="mb-2">
         Abre: {new Date(questionnaire.openDate).toLocaleDateString()} | 
         Cierra: {new Date(questionnaire.deadline).toLocaleDateString()}
@@ -106,7 +132,9 @@ export const Questionnaire = () => {
         className="bg-white p-6 rounded shadow-lg max-w-md w-full"
         overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
       >
-        <h3 className="text-lg font-semibold mb-4">¿Deseas enviar tus respuestas y finalizar el cuestionario?</h3>
+        <h3 className="text-lg font-semibold mb-4">
+          ¿Deseas enviar tus respuestas y finalizar el cuestionario?
+        </h3>
         <div className="flex justify-end gap-4">
           <button 
             onClick={() => setShowConfirm(false)}

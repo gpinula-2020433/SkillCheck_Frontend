@@ -9,12 +9,13 @@ export const useQuestions = (questionnaireId) => {
   const [answers, setAnswers] = useState([])
   const [error, setError] = useState("")
 
+  const storageKey = `answers_${questionnaireId}`
+
   useEffect(() => {
     const fetchQuestions = async () => {
       setLoading(true)
       setError("")
       try {
-
         const response = await getQuestionsForStudentRequest(questionnaireId)
         if (response.error) {
           throw new Error(
@@ -26,14 +27,21 @@ export const useQuestions = (questionnaireId) => {
 
         setQuestions(response.questions)
 
-        const initialAnswers = response.questions.map(q => ({
-          questionnaireId: questionnaireId,
-          questionId: q._id,
-          type: q.type,
-          selectedOptionId: null,
-          answerText: ""
-        }))
-        setAnswers(initialAnswers)
+        const savedData = localStorage.getItem(storageKey)
+        if (savedData) {
+          const parsed = JSON.parse(savedData)
+          setAnswers(parsed.answers || [])
+          setCurrentIndex(parsed.currentIndex || 0)
+        } else {
+          const initialAnswers = response.questions.map(q => ({
+            questionnaireId,
+            questionId: q._id,
+            type: q.type,
+            selectedOptionId: null,
+            answerText: ""
+          }))
+          setAnswers(initialAnswers)
+        }
       } catch (err) {
         setError(err.message)
         toast.error(err.message)
@@ -44,6 +52,15 @@ export const useQuestions = (questionnaireId) => {
 
     if (questionnaireId) fetchQuestions()
   }, [questionnaireId])
+
+  useEffect(() => {
+    if (answers.length > 0) {
+      localStorage.setItem(storageKey, JSON.stringify({
+        answers,
+        currentIndex
+      }))
+    }
+  }, [answers, currentIndex, storageKey])
 
   const setAnswer = (questionId, type, selectedOptionId = null, answerText = "") => {
     setAnswers(prev =>
@@ -56,11 +73,15 @@ export const useQuestions = (questionnaireId) => {
   }
 
   const nextQuestion = () => {
-    if (currentIndex < questions.length - 1) setCurrentIndex(prev => prev + 1)
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex(prev => prev + 1)
+    }
   }
 
   const prevQuestion = () => {
-    if (currentIndex > 0) setCurrentIndex(prev => prev - 1)
+    if (currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1)
+    }
   }
 
   const submitAllAnswers = async () => {
@@ -71,7 +92,6 @@ export const useQuestions = (questionnaireId) => {
         questionnaireId
       }))
 
-
       const response = await submitAnswersRequest(payload)
       if (response.error) {
         throw new Error(
@@ -80,6 +100,9 @@ export const useQuestions = (questionnaireId) => {
             : response.message || "Error desconocido"
         )
       }
+
+      localStorage.removeItem(storageKey)
+
       toast.success(response.message || "Respuestas enviadas correctamente")
       return response
     } catch (err) {

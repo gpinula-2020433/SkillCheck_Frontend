@@ -35,7 +35,7 @@ export const routes = [
             { path: '', element: <Navigate to="login" /> },
             { path: 'login', element: <Login /> },
             { path: 'register', element: <Register /> },
-            { path: 'registerTeacher', element: <RegisterTeacher /> }
+            { path: 'register-teacher', element: <RegisterTeacher /> }
         ]
     },
     {

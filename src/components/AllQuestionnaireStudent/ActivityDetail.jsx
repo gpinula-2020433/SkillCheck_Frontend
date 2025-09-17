@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import Modal from "react-modal"
 import { useStudentAttempt } from "../../shared/hooks/questionnaire/useStudentAttempt"
@@ -8,8 +8,17 @@ const ActivityDetail = () => {
   const location = useLocation()
   const { questionnaire } = location.state || {}
   const [showConfirm, setShowConfirm] = useState(false)
+  const [hasSavedAnswers, setHasSavedAnswers] = useState(false)
 
   const { attempt, loading } = useStudentAttempt(questionnaire?._id)
+
+  // Verificar si hay respuestas guardadas en localStorage
+  useEffect(() => {
+    if (!questionnaire?._id) return
+    const key = `answers_${questionnaire._id}`
+    const saved = localStorage.getItem(key)
+    setHasSavedAnswers(!!saved)
+  }, [questionnaire])
 
   if (!questionnaire) return <p>Cuestionario no encontrado</p>
   if (loading) return <p>Cargando intento...</p>
@@ -19,24 +28,31 @@ const ActivityDetail = () => {
     navigate(`/main/questionnaire/${questionnaire._id}`, { state: { questionnaire } })
   }
 
-  //Helpers de formato (números con 2 decimales y fecha en español Guatemala)
-  const nf2 = new Intl.NumberFormat("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-
-  const fmtDateTime = (d) =>
-  new Date(d).toLocaleString("es-GT", {
-    dateStyle: "full",
-    timeStyle: "medium",
+  // Helpers de formato (números con 2 decimales y fecha en español Guatemala)
+  const nf2 = new Intl.NumberFormat("es-GT", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   })
 
-  const maxGrade = attempt?.maxGrade ?? attempt?.questionnaireId?.maxGrade ?? questionnaire.maxGrade
-  const passingGrade = attempt?.passingGrade ?? attempt?.questionnaireId?.passingGrade ?? questionnaire.passingGrade
-  const maxAllowedGrade = attempt?.maxAllowedGrade ?? attempt?.questionnaireId?.maxAllowedGrade ?? questionnaire.maxAllowedGrade
+  const fmtDateTime = (d) =>
+    new Date(d).toLocaleString("es-GT", {
+      dateStyle: "full",
+      timeStyle: "medium",
+    })
+
+  const maxGrade =
+    attempt?.maxGrade ?? attempt?.questionnaireId?.maxGrade ?? questionnaire.maxGrade
+  const passingGrade =
+    attempt?.passingGrade ?? attempt?.questionnaireId?.passingGrade ?? questionnaire.passingGrade
+  const maxAllowedGrade =
+    attempt?.maxAllowedGrade ?? attempt?.questionnaireId?.maxAllowedGrade ?? questionnaire.maxAllowedGrade
 
   const scoreOverMaxGrade = attempt?.scoreOverMaxGrade ?? 0
   const scoreOverAllowedGrade = attempt?.scoreOverAllowedGrade ?? 0
   const weightedScore = attempt?.weightedScore ?? 0
   const approvalStatus = attempt?.approvalStatus
-  const approvalStatusEs = approvalStatus === "Passed" ? "Aprobado" : approvalStatus === "Failed" ? "Reprobado" : "—"
+  const approvalStatusEs =
+    approvalStatus === "Passed" ? "Aprobado" : approvalStatus === "Failed" ? "Reprobado" : "—"
 
   const totalQuestions = attempt?.totalQuestions ?? 0
   const correctAnswers = attempt?.correctAnswers ?? 0
@@ -62,12 +78,10 @@ const ActivityDetail = () => {
         <hr className="my-2" />
 
         <p className="text-sm">
-          <strong>Apertura:</strong>{" "}
-          {fmtDateTime(questionnaire.openDate)}
+          <strong>Apertura:</strong> {fmtDateTime(questionnaire.openDate)}
         </p>
         <p className="text-sm mb-4">
-          <strong>Cierre:</strong>{" "}
-          {fmtDateTime(questionnaire.deadline)}
+          <strong>Cierre:</strong> {fmtDateTime(questionnaire.deadline)}
         </p>
 
         <p className="text-sm mb-4">
@@ -138,15 +152,13 @@ const ActivityDetail = () => {
                 </tr>
                 <tr>
                   <td className="px-4 py-2 font-medium bg-gray-100">Resultado</td>
-                  <td className="px-4 py-2">
-                    {approvalStatusEs}
-                  </td>
+                  <td className="px-4 py-2">{approvalStatusEs}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         ) : (
-          // No hay intento → validar fechas
+          // No hay intento → validar fechas y mostrar botón según si hay respuestas guardadas
           <>
             {now < openDate && (
               <p className="text-red-600 font-semibold">
@@ -161,12 +173,27 @@ const ActivityDetail = () => {
             )}
 
             {now >= openDate && now <= deadline && (
-              <button
-                onClick={() => setShowConfirm(true)}
-                className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
-              >
-                Resolver cuestionario
-              </button>
+              <>
+                {hasSavedAnswers ? (
+                  <button
+                    onClick={() =>
+                      navigate(`/main/questionnaire/${questionnaire._id}`, {
+                        state: { questionnaire },
+                      })
+                    }
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded"
+                  >
+                    Continuar cuestionario
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowConfirm(true)}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+                  >
+                    Resolver cuestionario
+                  </button>
+                )}
+              </>
             )}
           </>
         )}
@@ -179,20 +206,15 @@ const ActivityDetail = () => {
         className="bg-white p-6 rounded shadow-lg max-w-md w-full"
         overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
       >
-        <h3 className="text-lg font-semibold mb-4">
-          ¿Seguro que deseas iniciar este cuestionario?
-        </h3>
+        <h3 className="text-lg font-semibold mb-4">¿Seguro que deseas iniciar este cuestionario?</h3>
         <div className="flex justify-end gap-4">
-          <button 
+          <button
             onClick={() => setShowConfirm(false)}
             className="bg-gray-400 text-white px-4 py-2 rounded"
           >
             Cancelar
           </button>
-          <button 
-            onClick={handleStart}
-            className="bg-green-500 text-white px-4 py-2 rounded"
-          >
+          <button onClick={handleStart} className="bg-green-500 text-white px-4 py-2 rounded">
             Sí, iniciar
           </button>
         </div>
