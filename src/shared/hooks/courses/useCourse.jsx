@@ -15,7 +15,11 @@ export const useCourses = () => {
 
     if (response.error) {
       const errorMessage = response.message || "Error desconocido"
-      toast.error(errorMessage)
+      
+      if (response.message !== "No se encontraron cursos") {
+        toast.error(errorMessage)
+      }
+      
       setError(errorMessage)
       setCourses([])
     } else {
