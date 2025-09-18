@@ -26,7 +26,8 @@ export const useCreateCourse = () => {
           console.error("Error cargando profesores", err)
         }
       } else if (user?.role === "TEACHER") {
-        setProfesor(user.uid)
+        // aseguramos que siempre se asigne un ObjectId válido
+        setProfesor(user.uid || user._id)
       }
     }
 
@@ -39,8 +40,10 @@ export const useCreateCourse = () => {
       }
     }
 
-    fetchProfesores()
-    fetchAlumnos()
+    if (user) {
+      fetchProfesores()
+      fetchAlumnos()
+    }
   }, [user])
 
   const handleAddCompetencia = () => {
@@ -60,6 +63,11 @@ export const useCreateCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!profesor) {
+      alert("Error: no se ha asignado profesor")
+      return
+    }
 
     const formData = new FormData()
     formData.append("name", nombre)
