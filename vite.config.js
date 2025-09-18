@@ -7,7 +7,6 @@ dotenv.config()
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
     cors: true,
     proxy: {
       '/uploads': {
