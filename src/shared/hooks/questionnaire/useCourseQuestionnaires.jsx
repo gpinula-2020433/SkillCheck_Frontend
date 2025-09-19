@@ -6,10 +6,12 @@ export const useCourseQuestionnaires = (courseId, options = {}) => {
   const [questionnaires, setQuestionnaires] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [infoMessage, setInfoMessage] = useState("")
 
   const fetchQuestionnaires = async () => {
     setLoading(true)
     setError("")
+    setInfoMessage("")
 
     const response = await getAllQuestionnairesRequest({ courseId, ...options })
     setLoading(false)
@@ -18,11 +20,23 @@ export const useCourseQuestionnaires = (courseId, options = {}) => {
       const errorMessage = Array.isArray(response.message)
         ? response.message[0]?.msg || "Error desconocido"
         : response.message || "Error desconocido"
-      toast.error(errorMessage)
-      setError(errorMessage)
+      
+      if (response.message !== "Este curso no tiene cuestionarios registrados") {
+        toast.error(errorMessage)
+        setError(errorMessage)
+      }
+      
+      if (response.message === "Este curso no tiene cuestionarios registrados") {
+        setInfoMessage("Este curso no tiene cuestionarios registrados")
+      }
+
       setQuestionnaires([])
     } else {
       setQuestionnaires(response.data || [])
+      
+      if (response.data.length === 0) {
+        setInfoMessage("Este curso no tiene cuestionarios registrados")
+      }
     }
   }
 
@@ -32,5 +46,5 @@ export const useCourseQuestionnaires = (courseId, options = {}) => {
     }
   }, [courseId])
 
-  return { questionnaires, loading, error, refetch: fetchQuestionnaires }
+  return { questionnaires, loading, error, infoMessage, refetch: fetchQuestionnaires }
 }
