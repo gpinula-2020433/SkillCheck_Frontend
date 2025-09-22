@@ -1,9 +1,29 @@
 import axios from "axios"
+import { getLoadingSetter } from "../shared/context/LoadingContext"
 
 const apiClient = axios.create(
   {
     baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true
+  }
+)
+
+apiClient.interceptors.request.use((config) => {
+  const setLoading = getLoadingSetter()
+  if (setLoading) setLoading(true)
+  return config
+})
+
+apiClient.interceptors.response.use(
+  (response) => {
+    const setLoading = getLoadingSetter()
+    if (setLoading) setLoading(false)
+    return response
+  },
+  (error) => {
+    const setLoading = getLoadingSetter()
+    if (setLoading) setLoading(false)
+    return Promise.reject(error)
   }
 )
 
