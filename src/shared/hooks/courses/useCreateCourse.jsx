@@ -74,13 +74,12 @@ export const useCreateCourse = () => {
     formData.append("description", descripcion)
     formData.append("teacher", profesor)
     if (imagen) formData.append("imageCourse", imagen)
-    formData.append("competences", JSON.stringify(competencias.map(c => c.competenceName)))
+    formData.append("competences", JSON.stringify(competencias.map((c, index) => ({number: index + 1, competenceName: String(c.competenceName)}))))
 
     const res = await createCourseRequest(formData)
     if (!res.error) {
       const courseId = res.course?._id
 
-      // asignar alumnos seleccionados
       for (const studentId of alumnosSeleccionados) {
         await assignStudentToCourseRequest(studentId, courseId)
       }
