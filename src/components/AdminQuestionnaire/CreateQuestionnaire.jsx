@@ -63,7 +63,18 @@ export const CreateQuestionnaire = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const payload = { ...questionnaireData, courseId }
+
+    // Convertir las fechas a UTC
+    const openDateUTC = new Date(questionnaireData.openDate).toISOString()
+    const deadlineUTC = new Date(questionnaireData.deadline).toISOString()
+
+    const payload = {
+      ...questionnaireData,
+      openDate: openDateUTC,
+      deadline: deadlineUTC,
+      courseId,
+    }
+
     const res = await createQuestionnaire(payload)
     if (res) navigate(`/admin/questionnaire/details/${courseId}`)
   }
