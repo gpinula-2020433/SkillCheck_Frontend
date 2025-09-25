@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import NotFound from './components/NotFound'
+import NotFound from './components/Status/NotFound'
 import { MainPage } from './pages/MainPage/MainPage'
 import {AdminPage} from './pages/AdminPage/AdminPage'
 import {AuthPage} from './pages/AuthPage/AuthPage'
@@ -22,6 +22,8 @@ import CourseQuestionnairePage from './pages/MainPage/CourseQuestionnairePage'
 import StudentCourses from './components/AllGradesStudent/StudentCourses'
 import CourseGrades from './components/AllGradesStudent/CourseGrades'
 import { RegisterTeacher } from './components/Auth/RegisterTeacher'
+import TooManyRequests from './components/Status/TooManyRequests'
+import ServiceUnavailable from './components/Status/ServiceUnavailable'
 
 export const routes = [
     {
@@ -74,6 +76,14 @@ export const routes = [
                 ]
             }
         ]
+    },
+    {
+        path: '/service-unavailable',
+        element: <ServiceUnavailable />
+    },
+    {
+        path: '/too-many-requests',
+        element: <TooManyRequests />
     },
     {
         path: '*',

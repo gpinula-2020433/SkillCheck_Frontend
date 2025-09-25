@@ -23,6 +23,31 @@ apiClient.interceptors.response.use(
   (error) => {
     const setLoading = getLoadingSetter()
     if (setLoading) setLoading(false)
+      
+    const isOn503Page = window.location.pathname === "/service-unavailable";
+    const isOn429Page = window.location.pathname === "/too-many-requests";
+
+    //console.log(error?.response?.status);
+
+    if (!error.response) {
+      if (!isOn503Page) {
+        localStorage.setItem("lastRoute", window.location.pathname);
+        window.location.href = "/service-unavailable";
+      }
+    } else {
+      const status = error.response.status;
+
+      if (status === 503 && !isOn503Page) {
+        localStorage.setItem("lastRoute", window.location.pathname);
+        window.location.href = "/service-unavailable";
+      }
+      if (status === 429 && !isOn429Page) {
+        localStorage.setItem("lastRoute", window.location.pathname);
+        window.location.href = "/too-many-requests";
+      }
+    }
+
+
     return Promise.reject(error)
   }
 )
