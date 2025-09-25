@@ -1,8 +1,6 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
 
 export const TooManyRequests = () => {
-  const navigate = useNavigate()
   const lastRoute = localStorage.getItem("lastRoute") || "/"
 
   return (
@@ -13,10 +11,10 @@ export const TooManyRequests = () => {
           Has realizado demasiadas solicitudes en un corto periodo de tiempo. Por favor, espera un momento y vuelve a intentarlo más tarde.
         </p>
         <button
-          onClick={() => navigate(lastRoute)}
+          onClick={() => (window.location.href = lastRoute)}
           className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
-          Volver a la página anterior
+          Reintentar
         </button>
       </div>
     </div>
