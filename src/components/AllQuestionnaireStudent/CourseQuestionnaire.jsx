@@ -1,6 +1,7 @@
 import React from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useLocation } from "react-router-dom"
 import { useCourseQuestionnaires } from "../../shared/hooks/questionnaire/useCourseQuestionnaires"
+import { useStudentQuestionnaires } from "../../shared/hooks/questionnaire/useStudentQuestionnaires"
 import { BackButton } from '../BackButton'
 
 export const CourseQuestionnaire = () => {
@@ -39,15 +40,15 @@ export const CourseQuestionnaire = () => {
           <div key={q._id} className="flex mb-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-md">
             <div className="flex-1">
               <strong className="block">{q.title}</strong>
-              <p className="text-gray-500 text-sm">
-                  <p>{q.description}</p>
+              <div className="text-gray-500 dark:text-gray-400 text-sm">
+                <p>{q.description}</p>
                 <p><strong>Curso:</strong> {q.courseId?.name}</p>
                 <p><strong>Nota máxima:</strong> {q.maxGrade}</p>
                 <p><strong>Nota máxima permitida:</strong> {q.maxAllowedGrade}</p>
                 <p><strong>Nota aprobatoria:</strong> {q.passingGrade}</p>
-                <strong>Abre:</strong> {new Date(q.openDate).toLocaleDateString()} | 
-                <strong> Cierra:</strong> {new Date(q.deadline).toLocaleDateString()}
-              </p>
+                <p><strong>Abre:</strong> {new Date(q.openDate).toLocaleDateString()} | 
+                <strong> Cierra:</strong> {new Date(q.deadline).toLocaleDateString()}</p>
+              </div>
               <div className="flex justify-end mt-2">
                 <button
                   onClick={() => navigate(`/main/activity/${q._id}`, { state: { questionnaire: q } })}

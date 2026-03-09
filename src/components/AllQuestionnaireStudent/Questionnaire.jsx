@@ -129,23 +129,23 @@ export const Questionnaire = () => {
         isOpen={showConfirm}
         onRequestClose={() => setShowConfirm(false)}
         contentLabel="Confirmar envío"
-        className="bg-white p-6 rounded shadow-lg max-w-md w-full"
+        className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg max-w-md w-full"
         overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
       >
-        <h3 className="text-lg font-semibold mb-4">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
           ¿Deseas enviar tus respuestas y finalizar el cuestionario?
         </h3>
         <div className="flex justify-end gap-4">
           <button 
             onClick={() => setShowConfirm(false)}
-            className="bg-gray-400 text-white px-4 py-2 rounded"
+            className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
             disabled={submitting}
           >
             Cancelar
           </button>
           <button 
             onClick={handleSubmit}
-            className={`bg-green-500 text-white px-4 py-2 rounded ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
             disabled={submitting}
           >
             {submitting ? "Enviando..." : "Sí, enviar"}
