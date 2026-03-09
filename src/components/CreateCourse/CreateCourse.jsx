@@ -26,14 +26,14 @@ const CreateCourse = () => {
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
       <form onSubmit={handleSubmit}>
-        <h1 className="text-2xl font-bold mb-6">Crear un nuevo Curso</h1>
+        <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">Crear un nuevo Curso</h1>
 
         {/* Nombre */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Nombre del Curso</label>
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Nombre del Curso</label>
           <input
             type="text"
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded px-3 py-2"
             placeholder="Ingrese el nombre del curso"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
@@ -43,9 +43,9 @@ const CreateCourse = () => {
 
         {/* Descripción */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Descripción del curso</label>
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Descripción del curso</label>
           <textarea
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded px-3 py-2"
             placeholder="Ingrese una breve descripción"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
@@ -56,9 +56,9 @@ const CreateCourse = () => {
         {/* Profesor solo si es ADMIN */}
         {user?.role === "ADMIN" && (
           <div className="mb-6">
-            <label className="block text-sm font-semibold mb-2">Profesor encargado</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Profesor encargado</label>
             <select
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded px-3 py-2"
               value={profesor}
               onChange={(e) => setProfesor(e.target.value)}
               required
@@ -75,10 +75,10 @@ const CreateCourse = () => {
 
         {/* Asignar alumnos */}
         <div className="mb-6">
-          <label className="block text-sm font-semibold mb-2">Asignar alumnos</label>
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Asignar alumnos</label>
           <select
             multiple
-            className="w-full border rounded px-3 py-2 h-40"
+            className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded px-3 py-2 h-40"
             value={alumnosSeleccionados}
             onChange={(e) => {
               const selected = Array.from(e.target.selectedOptions, option => option.value)
@@ -91,14 +91,14 @@ const CreateCourse = () => {
               </option>
             ))}
           </select>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Mantén Ctrl (Windows) o Cmd (Mac) más click izquierdo para seleccionar múltiples alumnos
           </p>
         </div>
 
         {/* Imagen */}
         <div className="mb-6">
-          <label className="block text-sm font-semibold mb-2">Imagen del curso</label>
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Imagen del curso</label>
           <input
             type="file"
             accept="image/*"
@@ -127,7 +127,7 @@ const CreateCourse = () => {
 
       {/* Competencias */}
       <div>
-        <h2 className="text-lg font-bold mb-3">Competencias</h2>
+        <h2 className="text-lg font-bold mb-3 text-gray-800 dark:text-gray-100">Competencias</h2>
         <button
           type="button"
           onClick={handleAddCompetencia}
@@ -136,21 +136,21 @@ const CreateCourse = () => {
           Agregar competencias
         </button>
 
-        <table className="w-full border border-gray-300 text-left">
-          <thead className="bg-gray-100">
+        <table className="w-full border border-gray-300 dark:border-gray-600 text-left">
+          <thead className="bg-gray-100 dark:bg-gray-700">
             <tr>
-              <th className="px-4 py-2 border">No.</th>
-              <th className="px-4 py-2 border">Nombre de la competencia</th>
+              <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">No.</th>
+              <th className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">Nombre de la competencia</th>
             </tr>
           </thead>
           <tbody>
             {competencias.map((comp, index) => (
               <tr key={comp.id}>
-                <td className="px-4 py-2 border">{index + 1}</td>
+                <td className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200">{index + 1}</td>
                 <td className="px-4 py-2 border">
                   <input
                     type="text"
-                    className="w-full border rounded px-2 py-1"
+                    className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded px-2 py-1"
                     placeholder="Ingrese competencia"
                     value={comp.competenceName}
                     onChange={(e) => handleCompetenceChange(index, e.target.value)}

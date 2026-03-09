@@ -1,6 +1,7 @@
 import React from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import { useStudentQuestionnaires } from "../../shared/hooks/questionnaire/useStudentQuestionnaires"
+import { useNavigate, useParams } from "react-router-dom"
+import { useCourseQuestionnaires } from "../../shared/hooks/questionnaire/useCourseQuestionnaires"
+import { BackButton } from '../BackButton'
 
 export const CourseQuestionnaire = () => {
   const navigate = useNavigate()
@@ -17,9 +18,7 @@ export const CourseQuestionnaire = () => {
   return (
     <div className="max-w-4xl mx-auto p-5 font-sans mt-8">
 
-      <button onClick={() => navigate(-1)} className="text-blue-500 hover:underline mb-4">
-        ← Regresar
-      </button>
+      <BackButton className="mb-4" />
       <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow">
         <h1 className="text-2xl font-bold mb-2">{course.name}</h1>
         <p className="text-gray-600 dark:text-gray-300 mb-2">{course.description || "Sin descripción"}</p>

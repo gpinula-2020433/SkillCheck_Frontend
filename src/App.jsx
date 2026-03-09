@@ -4,16 +4,19 @@ import './App.css'
 import { routes } from "./routes"
 import { Toaster } from "react-hot-toast"
 import Modal from "react-modal"
+import { DarkModeProvider } from './context/DarkModeContext'
 
 Modal.setAppElement('#root')
 
 function App() {
     const elements = useRoutes(routes)
   return (
-    <>
-      {elements}
-      <Toaster position="bottom-right" reverseOrder={false}/>
-    </>
+    <DarkModeProvider>
+      <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
+        {elements}
+        <Toaster position="bottom-right" reverseOrder={false}/>
+      </div>
+    </DarkModeProvider>
   )
 }
 

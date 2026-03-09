@@ -1,6 +1,7 @@
 import React from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useQuestionnaireResults } from "../../shared/hooks/questionnaire/useQuestionnaireResults"
+import { BackButton } from '../BackButton'
 
 const QuestionnaireResults = () => {
   const navigate = useNavigate()
@@ -34,26 +35,21 @@ const QuestionnaireResults = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 font-sans mt-8">
-      <button
-        onClick={() => navigate(-1)}
-        className="text-blue-500 hover:underline mb-4"
-      >
-        ← Regresar
-      </button>
+      <BackButton className="mb-4" />
 
-      <div className="bg-gray-50 shadow-md rounded-lg p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-2">
+      <div className="bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">
           {questionnaire.title} - {questionnaire.course}
         </h2>
         <hr className="my-2" />
-        <p className="text-sm mb-4">
+        <p className="text-sm mb-4 text-gray-600 dark:text-gray-400">
           <strong>Total estudiantes:</strong> {results.total}
         </p>
 
         {allCompetencies.length > 0 && (
           <div className="mb-4">
-            <h4 className="text-md font-semibold">Competencias evaluadas:</h4>
-            <ul className="list-disc pl-6 text-sm">
+            <h4 className="text-md font-semibold text-gray-700 dark:text-gray-300">Competencias evaluadas:</h4>
+            <ul className="list-disc pl-6 text-sm text-gray-700 dark:text-gray-300">
               {allCompetencies.map((c) => (
                 <li key={c.competencyId}>
                   {c.competencyNumber} - {c.competencyName}
@@ -64,25 +60,25 @@ const QuestionnaireResults = () => {
         )}
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm border border-gray-300 rounded-lg shadow-sm">
-            <thead className="bg-gray-200">
+          <table className="w-full text-sm border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm">
+            <thead className="bg-gray-200 dark:bg-gray-700">
               <tr>
-                <th className="px-4 py-2 text-left">Estudiante</th>
-                <th className="px-4 py-2 text-left">Correo</th>
-                <th className="px-4 py-2 text-left">Estado</th>
-                <th className="px-4 py-2 text-left">Nota (global)</th>
-                <th className="px-4 py-2 text-left">Nota (permitida)</th>
-                <th className="px-4 py-2 text-left">Ponderada</th>
-                <th className="px-4 py-2 text-left">Aprobación</th>
-                <th className="px-4 py-2 text-left">Fecha</th>
-                <th className="px-4 py-2 text-left w-80">Competencias</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Estudiante</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Correo</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Estado</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Nota (global)</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Nota (permitida)</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Ponderada</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Aprobación</th>
+                <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Fecha</th>
+                <th className="px-4 py-2 text-left w-80 text-gray-700 dark:text-gray-300">Competencias</th>
               </tr>
             </thead>
             <tbody>
               {data.map((r) => (
-                <tr key={r.studentCourseId} className="border-b align-top">
-                  <td className="px-4 py-2">{r.student}</td>
-                  <td className="px-4 py-2">{r.email}</td>
+                <tr key={r.studentCourseId} className="border-b align-top dark:border-gray-600">
+                  <td className="px-4 py-2 text-gray-800 dark:text-gray-200">{r.student}</td>
+                  <td className="px-4 py-2 text-gray-800 dark:text-gray-200">{r.email}</td>
                   <td className="px-4 py-2">
                     {r.result ? "Finalizado" : "Pendiente"}
                   </td>

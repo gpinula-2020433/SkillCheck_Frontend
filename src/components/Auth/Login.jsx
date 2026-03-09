@@ -50,9 +50,9 @@ export const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Iniciar Sesión</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl">
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">Iniciar Sesión</h2>
         
         <form className="space-y-6" onSubmit={handleSubmit}>
           <Input
@@ -92,15 +92,15 @@ export const Login = () => {
         </form>
         
         {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+          <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-lg text-sm">
             {error}
           </div>
         )}
         
 
-         <p className="mt-4 text-center text-sm">
+         <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
           ¿No tienes cuenta?{' '}
-          <Link to="/auth/register" className="text-blue-600 hover:underline">
+          <Link to="/auth/register" className="text-blue-600 dark:text-blue-400 hover:underline">
             Regístrate
           </Link>
         </p>

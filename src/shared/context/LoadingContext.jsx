@@ -16,13 +16,13 @@ export const LoadingProvider = ({ children }) => {
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
       {loading && (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 z-50">
+        <div className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 z-50">
           <img
             src="/logo.png"
             alt="Logo"
             className="w-32 h-32 animate-bounce mb-6"
           />
-          <h1 className="mt-6 text-2xl font-bold text-gray-700 animate-pulse">
+          <h1 className="mt-6 text-2xl font-bold text-gray-700 dark:text-gray-200 animate-pulse">
             CARGANDO...
           </h1>
         </div>

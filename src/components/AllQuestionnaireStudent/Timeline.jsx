@@ -57,7 +57,7 @@ export const Timeline = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3 relative">
         <div>
           <h1 className="text-2xl font-bold">Línea de tiempo</h1>
-          <p className="text-gray-600">Revisa y completa los cuestionarios asignados</p>
+          <p className="text-gray-600 dark:text-blue-400">Revisa y completa los cuestionarios asignados</p>
         </div>
 
         <div className="relative inline-block text-left">
