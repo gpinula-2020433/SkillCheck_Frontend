@@ -29,16 +29,16 @@ La interfaz está diseñada con una experiencia de usuario optimizada, incluyend
 
 ## Vista de la aplicación
 
-![Dashboard](./docs/img/screenshots/general/2Dashboard.png)
+![Panel principal](./docs/img/screenshots/general/2Dashboard.png)
 
-### Student Panel
-![Student Complete questionnaire](./docs/img/screenshots/student/14-CompleteQuestionnaire.png)
-![Student Results](./docs/img/screenshots/student/15-ResultQuestionnaire.png)
+### Panel de Estudiante
+![Completar cuestionario](./docs/img/screenshots/student/14-CompleteQuestionnaire.png)
+![Resultados del cuestionario](./docs/img/screenshots/student/15-ResultQuestionnaire.png)
 
-### Admin Panel
-![Create Course](./docs/img/screenshots/admin/4-CreateCourse.png)
-![Create Questionnaire](./docs/img/screenshots/admin/7-CreateQuestionnaire.png)
-![Questionnaire Results](./docs/img/screenshots/admin/11-QuestionnaireResults.png)
+### Panel de Administrador
+![Crear curso](./docs/img/screenshots/admin/4-CreateCourse.png)
+![Crear cuestionario](./docs/img/screenshots/admin/7-CreateQuestionnaire.png)
+![Resultados del cuestionario](./docs/img/screenshots/admin/11-QuestionnaireResults.png)
 
 > **Nota:** Puede visualizar todas las imágenes de la aplicación en [Screenshots](docs/screenshots.md).
 
